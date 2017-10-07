@@ -10,12 +10,6 @@ x_data = [[73., 80., 75.],
           [89., 91., 90.],
           [96., 98., 100.],
           [73., 66., 70.]]
-
-
-[73., 93., 89., 96., 73.], 
-          [80., 88., 91., 98., 66.], 
-          [75., 93., 90., 100., 70.]
-
 ]
 y_data = [[152.], [185.], [180.], [196.], [142.]]
 ```
@@ -30,3 +24,25 @@ b = tf.Variable(tf.random_normal([1]), name='bias')
 hypothesis = tf.matmul(W, X) + b
 ```
 shape, matmul과 같은 함수를 이용해 행렬로 되어있는 데이터를 처리한다.
+
+## Read Data From File
+numpy 의 'loadtxt'를 이용
+
+```
+xy = np.loadtxt('data-01-test-scroe.csv', delimiter=',', dtype=np.float32)
+```
+그런 후, slice로 xy 데이터를 나눈다.
+
+#### slice 규칙
+* a[0:2] == a[0], a[1]
+* a[:] == a[0], a[1], ..., a[n-1]
+* 정리 : 앞에 적힌 숫자의 index부터 뒤에 적힌 index 전 index까지
+
+```
+x = xy[:, 0:-1]
+y = xy[:, [-1]]
+```
+
+## Queue Runners (numpy)
+메모리 부족을 대비해 (데이터가 너무 클 때
+File을 부분적으로 가져와 학습시킨 후, 다른 부분을 또 로드해 학습시키는 방식으로 작동)
