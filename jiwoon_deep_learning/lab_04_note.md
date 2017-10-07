@@ -44,5 +44,26 @@ y = xy[:, [-1]]
 ```
 
 ## Queue Runners (numpy)
-메모리 부족을 대비해 (데이터가 너무 클 때
+메모리 부족을 대비해 (데이터가 너무 클 때)
 File을 부분적으로 가져와 학습시킨 후, 다른 부분을 또 로드해 학습시키는 방식으로 작동)
+
+#### step
+* 파일을 지정 (여러 파일도 가능)
+```
+filename_queue = tf.train.string_input_producer(['data_01.csv', 'data-02.csv', ...], shuffle=False, name='filename_queue')
+```
+* 파일을 읽어올 Reader를 지정
+```
+reader = tf.TextLineReader()
+key, value = reader.read(filename_queue)
+```
+* 읽어온 value를 파싱
+```
+record_defaults = [[0.], [0.], [0.], [0.]] # 값이 없을 때를 위해 default value를 지정
+xy = tf.decode_csv(value, record_defaults=record_defaults)
+```
+
+이후, batch를 이용해 데이터를 분리 (slicing)
+```
+train_x_batch, train_y_batch = tf.train.batch([xy[0:-1], xy[-1]], batch_size=10)
+```
