@@ -55,3 +55,6 @@ mean_loss = tf.reduce_mean(sequence_loss)
 sequence_length = [5, 3, 4]
 ```
 
+### RNN with time series data
+> many to one RNN, appropriate model for predict stock market
+
